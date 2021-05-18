@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .img {
+            width: 600px;
+            position: relative;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        span {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            display: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            background-color: azure;
+            color: #999;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <input type="file" id="file">
+    </div>
+    <div class="img">
+        <img src="" alt="" id="pic">
+        <span>x</span>
+    </div>
+</body>
+<script>
+    const input = document.querySelector("input");
+    const span = document.querySelector("span");
+    const pic = document.querySelector("#pic");
+    var file, fileReader;
+    // 监听文件输入框改变事件
+    input.addEventListener("change", changeHandler)
+    span.addEventListener("click", clickCloseHandler)
+    function changeHandler(e) {
+        // 获取文件对象
+        file = input.files[0];
+
+        // H5的读取文件的api
+        fileReader = new FileReader();
+        // 将file对象转换为流 就可以发送ajax
+        fileReader.readAsArrayBuffer(file);
+        // 加载结束
+        fileReader.addEventListener("loadend", loadEndHandler)
+    }
+
+    // 加载结束事件函数  发送请求发送数据
+    function loadEndHandler(e) {
+        sendRequest("/upload", file.name, fileReader.result, function (res) {
+            let json = eval('(' + res + ')')
+            pic.src = json.url;
+            span.style.display = "block";
+        })
+    }
+
+    // 点击关闭
+    function clickCloseHandler(e) {
+        sendRequest("/close", pic.src, null, function (res) {
+            let json = eval('(' + res + ')')
+            if (json.code === 200) {
+                pic.src = '';
+                span.style.display = "none";
+            }
+        })
+    }
+    // 请求
+    function sendRequest(route, filename, data, cb) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", route, true);
+        xhr.setRequestHeader("filename", filename);
+        xhr.send(data);
+        xhr.addEventListener("readystatechange", () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                cb(xhr.responseText);
+            }
+        })
+    }
+</script>
+
+</html>
