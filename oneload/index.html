@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            width: 600px;
+            margin: 0 auto;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        img {
+            width: 600px;
+        }
+
+        a {
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        p {
+            max-width: 600px;
+        }
+
+        div span:nth-child(2) {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul class="box">
+
+    </ul>
+
+    <script>
+        var dataList, box, li;
+
+        getDataList(render);
+
+        // 请求回调函数
+        function render(res) {
+            dataList = JSON.parse(res).datalist;
+            box = document.querySelector(".box");
+            dataList.forEach(item => {
+                li = createLi(item)
+                let a = document.createElement("A");
+                a.innerHTML = "下载图片";
+                a.href = `./upload/images/${item.img}`
+                a.download = item.img
+                a.data = item.img;
+                li.appendChild(a);
+                box.appendChild(li);
+            });
+        }
+
+        function createLi(data) {
+            let l = document.createElement("LI")
+            l.innerHTML = `
+                <div>
+                    <span>${data.vol}</span>
+                    <span>${data.date}</span>   
+                    <p>${data.type}</p>   
+                    <p>${data.text}</p>   
+                    <img src="./upload/images/${data.img}"></img> 
+                </div>
+            `
+
+            return l
+        }
+
+        // 发送请求
+        function getDataList(func) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "./upload/log1621433147547.json");
+            xhr.send();
+            xhr.addEventListener("readystatechange", () => {
+                if (xhr.status === 200 && xhr.readyState === 4) {
+                    func(xhr.response)
+                }
+            })
+        };
+
+    </script>
+</body>
+
+</html>
