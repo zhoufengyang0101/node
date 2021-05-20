@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+
+
+    <div class="header">
+        <h3>后台管理系统</h3>
+        <form action="/logout"><button type="submit">退出登录</button></form>
+    </div>
+    <div class="main">
+        <div class="left">
+            <ul>
+                <li data-src="/userList.html">用户管理</li>
+                <li data-src="/readList.html">文章管理</li>
+                <li data-src="/musicList.html">音乐管理</li>
+                <li data-src="/login.html">影视管理</li>
+                <li data-src="/loginLog">访问记录</li>
+            </ul>
+        </div>
+        <div class="right">
+            <iframe src="/userList.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script>
+        var ul = document.querySelector("ul")
+        ul.addEventListener("click", clickHandler)
+
+        function clickHandler(e) {
+            console.log(e.target)
+            if (e.target.nodeName !== "LI") return
+            document.querySelector("iframe").src = e.target.getAttribute("data-src")
+            console.log(document.querySelector("iframe").src)
+        }
+    </script>
+</body>
+
+</html>

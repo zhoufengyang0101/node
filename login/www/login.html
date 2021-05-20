@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录</title>
+    <link rel="stylesheet" href="./css/form.css">
+</head>
+
+<body>
+    <form action="/login" method="POST">
+        <h4>管理员登录</h4>
+        <p>
+            <label>用户名</label>
+            <input type="username" id="username" name="username" placeholder="admin">
+            <span id="usermsg">用户明长度不能小于3</span>
+        </p>
+        <p>
+            <label>密&emsp;码</label>
+            <input type="password" id="password" name="password" placeholder="admin">
+            <span id="passmsg">密码长度不能小于3</span>
+        </p>
+        <div>
+            <a href="">还没有账号？去注册</a><button id="login">登录</button>
+        </div>
+    </form>
+
+    <script>
+    </script>
+</body>
+
+<script>
+    var form = document.querySelector("form")
+    var username = document.querySelector("#username")
+    var password = document.querySelector("#password")
+
+    username.addEventListener("input", inputHandler)
+    password.addEventListener("input", inputHandler)
+
+    function inputHandler(e) {
+        let id = e.target.nextElementSibling.id
+        var span = document.querySelector(`#${id}`)
+        span.style.display = e.target.value.length < 3 ? "block" : "none"
+    }
+</script>
+
+</html>
