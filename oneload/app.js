@@ -30,12 +30,12 @@ http.createServer((req, res) => {
             }
         }
     } else {
-        if (req.url !== "/favicon.ico") {
-            pathname = pathname === '/' ? '/index.html' : pathname
+        pathname = pathname === '/' ? '/index.html' : pathname
+        let ext = extname(pathname)
+        if (req.url !== "/favicon.ico" && ext) {
             // 得到请求的对象服务器中真实的文件路径
             let filepath = join(webRoot, pathname)
 
-            let ext = extname(pathname)
             // 针对于图片进行浏览器缓存
             if ('.jpg' === ext) {
                 // 强缓存
@@ -64,9 +64,9 @@ http.createServer((req, res) => {
                 }
             }
             fs.createReadStream(filepath).pipe(res)
-        } else {
+        } else if(!ext) {
             res.statusCode = 404
-            fs.createReadStream('./www/404.html').pipe(res)
+            fs.createReadStream('./404.html').pipe(res)
         }
     }
 }).listen(3000, '0.0.0.0', () => {
