@@ -1,6 +1,10 @@
 const express = require('express')
 const cookieSession = require('cookie-session')
+const cors = require('cors')
 const app = express()
+
+// 跨域
+app.use(cors())
 
 // 使用session
 app.use(cookieSession({
