@@ -36,10 +36,8 @@
         ul.addEventListener("click", clickHandler)
 
         function clickHandler(e) {
-            console.log(e.target)
             if (e.target.nodeName !== "LI") return
             document.querySelector("iframe").src = e.target.getAttribute("data-src")
-            console.log(document.querySelector("iframe").src)
         }
     </script>
 </body>
