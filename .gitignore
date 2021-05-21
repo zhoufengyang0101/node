@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 node_modules
 *.jpg
 *.log
 *.json
 /*/node_modules
+=======
+*/node_modules
+*.jpg
+*.log
+*.json
+/*/node_modules
+>>>>>>> fbe22254ed4c12077c78a8f81d8589dc3f9a472c
