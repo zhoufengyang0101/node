@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>404 错误</title>
+    <style>
+        body {
+            font: 16px arial, 'Microsoft Yahei', 'Hiragino Sans GB', sans-serif;
+        }
+        
+        h1 {
+            margin: 0;
+            color: #3a87ad;
+            font-size: 26px;
+        }
+        
+        .content {
+            width: 45%;
+            margin: 0 auto;
+        }
+        
+        .content>div {
+            margin-top: 50px;
+            padding: 20px;
+            background: #d9edf7;
+            border-radius: 12px;
+        }
+        
+        .content dl {
+            color: #2d6a88;
+            line-height: 40px;
+        }
+        
+        .content div div {
+            padding-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div>
+            404页面
+            <div>
+                我们从未离开，只是暂时迷路了！
+            </div>
+            <h6></h6>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var time = 10
+            let ids = setInterval(() => {
+                document.querySelector("h6").innerHTML = `${time--} 秒后回到上一个页面`
+                if (time < 0) {
+                    clearInterval(ids)
+                    history.back()
+                }
+            }, 1000)
+        })()
+    </script>
+</body>
+
+</html>

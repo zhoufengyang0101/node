@@ -1,0 +1,26 @@
+{
+    "name": "login",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "cross-env NODE_ENV=dev nodemon app.js",
+        "test": "cross-env NODE_ENV=test nodemon app.js",
+        "build": "cross-env NODE_ENV=test node app.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "art-template": "^4.13.2",
+        "cookie-session": "^1.4.0",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "express": "^4.17.1",
+        "express-art-template": "^1.0.1",
+        "mysql": "^2.18.1"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3"
+    }
+}

@@ -1,0 +1,93 @@
+form {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: url(../img/123.jpg) no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    box-shadow: 0 0 5px rgb(161, 147, 147);
+}
+
+h4 {
+    color: rgb(28, 107, 226);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.msg {
+    position: absolute;
+    bottom: 115px;
+    left: 160px;
+    color: red;
+    font-size: 18px;
+    text-align: center;
+}
+
+p {
+    position: relative;
+}
+
+input {
+    width: 30%;
+    height: 36px;
+    margin: 20px;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid rgb(235, 99, 189);
+}
+
+label {
+    color: rgb(79, 15, 104);
+    user-select: none;
+}
+
+
+/* 提示信息 */
+
+span {
+    font-size: 14px;
+    color: red;
+    position: absolute;
+    top: 36%;
+    right: 7%;
+    display: none;
+}
+
+a {
+    color: rgb(228, 13, 217);
+    text-decoration: darkmagenta;
+}
+
+.login {
+    padding-top: 20px;
+}
+
+button {
+    outline: none;
+    margin-left: 20px;
+    color: #fff;
+    padding: 5px 12px;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgb(128, 18, 231);
+    cursor: pointer;
+}
+
+i {
+    display: block;
+    width: 400px;
+    height: 300px;
+    position: fixed;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+    background-color: rgb(142, 126, 216);
+    opacity: 0.8;
+    text-align: center;
+    font-style: normal;
+}

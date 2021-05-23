@@ -1,0 +1,33 @@
+<!-- 继承模板 -->
+{{ extend './public/base.html' }}
+
+<!-- title -->
+{{block name="title"}} 日志展示{{/block}}
+
+<!-- 样式表 -->
+{{block name="style"}}
+<style>
+    p {
+        font-size: 26px;
+        text-align: center;
+        margin-top: 50px;
+    }
+    
+    b {
+        font-weight: 500;
+    }
+</style>
+{{/block}}
+<!-- 布局 -->
+{{block name="main"}}
+<div>
+    <p>当前ip：<span>{{ip}}</span></p>
+    <p>当前时间：<b></b></p>
+    <p>上次登录时间：<span>{{time}}</span></p>
+</div>
+{{/block}}
+
+<!-- js -->
+{{block name="js"}}
+<script src="../js/welcome.js"></script>
+{{/block}}

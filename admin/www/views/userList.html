@@ -1,0 +1,76 @@
+{{ extend './public/base.html' }}
+<!-- 样式 -->
+{{block name="style"}}
+<link rel="stylesheet" href="../css/ifram.css" />
+<link rel="stylesheet" href="../css/form.css" /> {{/block}}
+<!-- 主要内容 -->
+{{block name="main"}}
+<!-- 渲染users表格 -->
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">
+                <button type="submit" id="adduser" class="adduser">添加用户</button>
+            </th>
+            <th colspan="5">用户表</th>
+        </tr>
+        <td width="5%">
+            <input type="checkbox" class="checkAll">
+        </td>
+        <td width="10%">用户id</td>
+        <td width="10%">用户名</td>
+        <td width="20%">密码</td>
+        <td width="20%">昵称(可编辑)</td>
+        <td width="10%">性别(可编辑)</td>
+        <td width="14%"><button class="delSelect">删除选中</button></td>
+    </thead>
+    <tbody>
+        {{each users}}
+        <!--  -->
+        <tr>
+            <td>
+                <input type="checkbox" class="checkOne">
+            </td>
+            <td class="id">{{$value.id}}</td>
+            <td>{{$value.username}}</td>
+            <td>{{$value.password}}</td>
+            <td class="name">{{$value.name}}</td>
+            <td class="sex">{{$value.sex}}</td>
+            <td>
+                <button class="edit">修改</button>
+                <button class="delete">删除</button>
+            </td>
+        </tr>
+        <!--  -->
+        {{/each}}
+    </tbody>
+</table>
+
+<form action="javascript:void(0)">
+    <h4>添加用户</h4>
+    <p>
+        <label>用户名</label>
+        <input type="username" id="username" name="username">
+    </p>
+    <p>
+        <label>密&emsp;码</label>
+        <input type="text" id="password" name="password">
+    </p>
+    <p>
+        <label>昵&emsp;称</label>
+        <input type="text" id="names" name="names">
+    </p>
+    <p>
+        <label>性&emsp;别</label>
+        <input type="text" id="sexs" name="sexs">
+    </p>
+    <div>
+        <button id="add">添加</button>
+    </div>
+</form>
+{{/block}}
+<!-- js -->
+{{ block name="js"}}
+<script src="../js/layer.js"></script>
+<script src="../js/userList.js"></script>
+{{/block}}

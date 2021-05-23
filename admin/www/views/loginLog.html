@@ -1,0 +1,41 @@
+<!-- 继承模板 -->
+{{ extend './public/base.html' }}
+
+<!-- title -->
+{{block name="title"}} 日志展示{{/block}}
+
+<!-- 样式表 -->
+{{block name="style"}}
+<link rel="stylesheet" href="../css/ifram.css" /> {{/block}}
+<!-- 布局 -->
+{{block name="main"}}
+<div>
+    <h1>管理员日志</h1>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="6">日志表</th>
+            </tr>
+            <td width="8%">ip</td>
+            <td width="8%">访问时间</td>
+            <td width="8%">访问路径</td>
+            <td width="8%">请求体大小</td>
+            <td width="8%">请求方式</td>
+            <td width="30%">浏览器信息</td>
+        </thead>
+        <tbody>
+            {{each data}}
+            <tr>
+                <td>{{$value[0]}}</td>
+                <td>{{$value[1]}}</td>
+                <td>{{$value[2]}}</td>
+                <td>{{$value[3] + "b"}}</td>
+                <td>{{$value[4]}}</td>
+                <td>{{$value[5]}}</td>
+            </tr>
+
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{/block}}

@@ -1,0 +1,27 @@
+{{ extend './public/base.html' }}
+<!-- 、、 -->
+{{block name="title"}} 管理员登录 {{/block}}
+<!--  -->
+{{block name="style"}}
+<link rel="stylesheet" href="../css/form.css"> {{/block}} {{block name="main"}}
+<form action="javascript:void(0)">
+    <h4>管理员登录</h4>
+    <div class="msg">{{msg}}</div>
+    <p>
+        <label>用户名</label>
+        <input type="username" id="username" name="username" placeholder="admin">
+        <span id="usermsg">用户明长度不能小于3</span>
+    </p>
+    <p>
+        <label>密&emsp;码</label>
+        <input type="password" id="password" name="password" placeholder="admin">
+        <span id="passmsg">密码长度不能小于3</span>
+    </p>
+    <div class="login">
+        <a href="">还没有账号？去注册</a><button id="login">登录</button>
+    </div>
+</form>
+{{/block}} {{block name="js"}}
+<script src="../js/func.js"></script>
+<script src="../js/login.js"></script>
+{{/block}}

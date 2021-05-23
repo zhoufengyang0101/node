@@ -1,0 +1,49 @@
+table,
+th,
+td {
+    border: 1px solid #333;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+}
+
+table {
+    text-align: center;
+}
+
+thead tr {
+    height: 50px;
+    background-color: azure;
+}
+
+thead td {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+tbody tr {
+    height: 40px;
+}
+
+#name,
+#sex {
+    height: 30px;
+}
+
+#name {
+    width: 100px;
+}
+
+#sex {
+    width: 60px;
+}
+
+form {
+    display: none;
+}
+
+form input {
+    margin: 0;
+}
