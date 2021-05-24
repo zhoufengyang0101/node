@@ -16,16 +16,6 @@ router.get('/loginLog', getLog)
 // 获取userlist
 router.get('/userList', getUsers)
 
-// music
-router.get('/musicList', (req, res, next) => {
-    res.render('musicList.html')
-})
-
-// read
-router.get('/readList', (req, res, next) => {
-    res.render('readList.html')
-})
-
 
 
 module.exports = router

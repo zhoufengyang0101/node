@@ -9,7 +9,9 @@ body {
 .header {
     width: 85%;
     height: 100px;
-    background-color: rgb(179, 236, 236);
+    color: #fff;
+    font-size: 22px;
+    background-color: rgb(51, 109, 109);
     overflow: hidden;
     user-select: none;
     position: absolute;

@@ -139,6 +139,10 @@ function leaveInput() {
 // adduser
 function addUser() {
     zfya()
+    if (un.length < 3 || ps.length < 3) {
+        layer.msg("用户名密码不能小于3位", { icon: 3 })
+        return
+    }
     $.post("/user/add", {
         un: un,
         ps: ps,
@@ -170,6 +174,10 @@ function editUser(el) {
     $("form").show()
     $("#add").on("click", function() {
         zfya()
+        if (un.length < 3 || ps.length < 3) {
+            layer.msg("用户名密码不能小于3位", { icon: 3 })
+            return
+        }
         $.post("/user/edituser", {
             un: un,
             ps: ps,
@@ -201,8 +209,5 @@ function zfya() {
     ps = $.trim($("#password").val())
     nm = $.trim($("#names").val())
     ss = $.trim($("#sexs").val())
-    if (un.length < 3 || ps.length < 3) {
-        layer.msg("用户名密码不能小于3位", { icon: 3 })
-        return
-    }
+
 }

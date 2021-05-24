@@ -7,6 +7,10 @@
 <!-- 样式表 -->
 {{block name="style"}}
 <style>
+    h1 {
+        text-align: center;
+    }
+    
     p {
         font-size: 26px;
         text-align: center;
@@ -21,6 +25,7 @@
 <!-- 布局 -->
 {{block name="main"}}
 <div>
+    <h1>欢迎您访问Future后台管理系统</h1>
     <p>当前ip：<span>{{ip}}</span></p>
     <p>当前时间：<b></b></p>
     <p>上次登录时间：<span>{{time}}</span></p>
