@@ -1,0 +1,129 @@
+{{extend '../layout/main.html'}} {{block name="main"}}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{if data }}修改{{else}}添加{{/if}}影片</h5>
+                </div>
+                <div class="ibox-content">
+                    {{if data }}
+                    <form class="form-horizontal m-t" id="addfilm">
+                        {{else}}
+                        <form class="form-horizontal m-t" method="POST" action="/admin/film/add" id="addfilm">
+                            {{/if}}
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">片名：</label>
+                                <div class="col-sm-8">
+                                    <input name="title" value="{{if data }}{{data.title}}{{/if}}" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">封面：</label>
+                                <div class="col-sm-4">
+                                    {{if data }}<img src="{{data.pic}}" style="width: 150px;" />{{else}}
+                                    <div id="picker">选择文件</div>{{/if}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <img style="width:100px;" src="" id="showpic" />
+                                    <!-- 隐藏域，存储当前的上传成功图片地址，用于提交保存到数据库 -->
+                                    <input type="hidden" name="pic" id="pic" value="http://www.mobiletrain.org/images/index/new_logo.png?t=5.28">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">内容：</label>
+                                <div class="col-sm-8">
+                                    <div id="editbody">
+                                        <!-- {{if data }}{{data.body}}{{else}} -->
+                                        <p>路漫漫其修远兮，吾将上下而求索！</p>
+                                        <!-- {{/if}} -->
+                                    </div>
+                                    <input type="hidden" name="body" id="body">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    {{if data }}
+                                    <button class="btn btn-primary" id="editFilm({{data._id}})">修改影片</button> {{else}}
+                                    <button class="btn btn-primary" type="submit">添加影片</button> {{/if}}
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}} {{block name='css'}}
+<link rel="stylesheet" type="text/css" href="/admin/css/plugins/webuploader/webuploader.css"> {{/block}} {{block name='js'}}
+<script src="/admin/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="/admin/js/plugins/validate/messages_zh.min.js"></script>
+<script src="/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<script src="/admin/js/wangEditor/wangEditor.min.js"></script>
+
+<script>
+    // 富文本
+    const E = window.wangEditor
+    const editor = new E('#editbody')
+    editor.create()
+        // editor.txt.html('{{@ 变量}}')
+
+    // 前端表单验证
+    $("#addfilm").validate({
+        // 规则
+        rules: {
+            title: {
+                required: true,
+                minlength: 2
+            }
+        },
+        messages: {
+            title: {
+                required: '片名不能为空',
+                minlength: '片名长度不能少于2位'
+            }
+        },
+        // 让回车失效
+        onkeyup: false,
+        // 验证成功后，进行的回调事件
+        submitHandler: function(form) {
+            $('#body').val(editor.txt.html())
+            form.submit(); //提交表单
+        }
+    })
+
+    // 文件上传
+    const uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf: '/admin/js/plugins/webuploader/Uploader.swf',
+        // 文件接收服务端
+        server: '/admin/film/upfile',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#picker',
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false,
+        // 此上传组件，只支持图片上传
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,png',
+            mimeTypes: 'image/*'
+        },
+        // 表单域名称
+        fileVal: 'file'
+    });
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    uploader.on('uploadSuccess', function(file, response) {
+        $('#showpic').attr('src', response.url)
+        $('#pic').val(response.url)
+    });
+
+    function editFilm(id) {
+        // 发起请求根据id修改film
+        console.log(id);
+    }
+</script>
+{{/block}}

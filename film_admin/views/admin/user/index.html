@@ -1,0 +1,154 @@
+{{extend '../layout/main.html'}} {{block name="main"}}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>基本 <small>分类，查找</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_data_tables.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="table_data_tables.html#">选项1</a>
+                            </li>
+                            <li><a href="table_data_tables.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover" id="userlist">
+                        <thead>
+                            <tr>
+                                <th>索引</th>
+                                <!-- <th>_id</th> -->
+                                <th>账号</th>
+                                <th>手机号</th>
+                                <th>邮箱</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}} {{block name="css"}}
+<link href="/admin/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet"> {{/block}} {{block name='js'}}
+<script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/admin/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/admin/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+
+    // datatable动态表格显示
+    let datatables = $('#userlist').dataTable({
+        // 以第2列降序
+        order: [
+            [1, "desc"]
+        ],
+        // 分页列表数据,数组第1项为默认分页数量
+        lengthMenu: [5, 10, 20, 30, 50],
+        columnDefs: [
+            // 索引第4列，不进行排序
+            {
+                targets: [0, 6],
+                orderable: false
+            }
+        ],
+        // 开启服务器模式
+        serverSide: true,
+        // ajax发起请求
+        ajax: {
+            // 请求地址
+            url: '/admin/users/pages',
+            // 请求方式 get/post
+            type: 'get',
+        },
+        // columns要对tr中的td单元格中的内容进行数据填充
+        // 注意：如果data接收类似a或b的信息，实际服务器没有返回该信息，那么一定要同时设置
+        columns: [
+            // 总的数量与表格的列的数量一致，不多也不少
+            // 字段名称与sql查询出来的字段时要保持一致，就是服务器返回数据对应的字段名称
+            // defaultContent 和 className 可选参数
+            {
+                'data': 'index',
+                defaultContent: ''
+            }, {
+                'data': 'username'
+            }, {
+                'data': 'phone'
+            }, {
+                'data': 'email'
+            }, {
+                'data': 'sex'
+            }, {
+                'data': 'age'
+            }, {
+                'data': 'action',
+                "defaultContent": '操作'
+            }
+        ],
+        // 回调处理
+        createdRow: function(row, data, dataIndex) {
+            // 索引
+            $(row).find('td:eq(0)').html(dataIndex + 1)
+                // 操作
+            var html = `
+        <a class="btn btn-success" onclick="editUser('${data._id}')">修改</a>
+        <a onclick="deluser(this,${dataIndex},'${data._id}')" class="btn btn-danger">删除</a>
+      `
+            $(row).find('td:last-child').html(html)
+
+        }
+
+
+    });
+
+    function deluser(_this, id, _id) {
+        // $(_this).parents('tr').remove()
+        // 手动触发一下ajax请求
+        // console.log(datatables.api())
+        $.ajax({
+            url: '/admin/users/delete',
+            type: 'delete',
+            data: {
+                _id
+            }
+        }).then(r => {
+            // 删除此前行
+            if (r.code === 200) datatables.api().ajax.reload()
+            else window.alert("删除失败")
+        })
+    }
+
+    function editUser(_id) {
+        $.ajax({
+            url: '/admin/users/edit',
+            type: 'post',
+            data: {
+                _id
+            }
+        }).then(r => {
+            if (typeof r !== 'object') document.write(r)
+            else alert("操作异常")
+        })
+    }
+</script>
+{{/block}}
