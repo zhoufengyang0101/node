@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的聊天室</title>
+    <link rel="stylesheet" href="./online.css">
+</head>
+
+<body>
+
+    <div class="selector">
+        <h3>点击选择头像:</h3>
+        <ul>
+            <img src="https://img1.baidu.com/it/u=2538267351,1358629159&fm=26&fmt=auto&gp=0.jpg" />
+            <img src="https://img2.baidu.com/it/u=1586951240,102747417&fm=26&fmt=auto&gp=0.jpg" />
+            <img src="https://img0.baidu.com/it/u=2091579223,1588718132&fm=26&fmt=auto&gp=0.jpg" />
+            <img src="https://img1.baidu.com/it/u=2538267351,1358629159&fm=26&fmt=auto&gp=0.jpg" />
+            <img src="https://img1.baidu.com/it/u=3144064157,2696999544&fm=26&fmt=auto&gp=0.jpg" />
+            <img src="https://img1.baidu.com/it/u=1267384051,3167521648&fm=26&fmt=auto&gp=0.jpg" />
+        </ul>
+        <div class="name">
+            <h3>请填写昵称：</h3>
+            <input type="text"><br>
+            <button>点击进入聊天室</button>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="users">
+            <p>当前在线用户：</p>
+            <ul>
+            </ul>
+        </div>
+        <div id="showmsg"></div>
+        <div>
+            <textarea type="text" id='cnt'></textarea> <button id='btn'>发送消息</button>
+            <input type="file" id='pic'>
+        </div>
+    </div>
+    <script src="./js/socket.io.min.js"></script>
+    <script>
+        let ul = document.querySelector("ul")
+        ul.addEventListener("click", clickUlHandler)
+        let prev = 0;
+        let img_url, uname;
+        document.querySelector(".name button").addEventListener("click", clickBtnHandler)
+
+        function clickUlHandler(e) {
+            if (e.target.nodeName !== 'IMG') return;
+            let arr = Array.from(ul.children)
+            e.target.style.borderColor = "red";
+            let index = arr.indexOf(e.target)
+            if (index !== prev) {
+                arr[prev].style.borderColor = "transparent"
+            }
+            prev = index
+            img_url = arr[prev].src
+        }
+
+        function clickBtnHandler(e) {
+            uname = document.querySelector(".name input").value.trim()
+            if (uname === "" || !img_url) {
+                alert("请输入选择头像并且填写昵称")
+                return
+            }
+            console.log(img_url);
+            document.querySelector(".selector").style.display = "none"
+            document.querySelector(".container").style.display = "block"
+            send()
+        }
+    </script>
+    <script>
+        const client = io.connect('/')
+
+        function send() {
+            let data = {
+                "uname": uname,
+                "img_url": img_url
+            }
+            data = JSON.stringify(data)
+            if (uname) {
+                // 发送一个用户名
+                client.emit('uname', data)
+
+                client.on('msg', msg => {
+                    let div = document.createElement('div')
+                    div.innerHTML = msg
+
+                    // 判断是不是自己的消息
+                    let name = msg.match(/【(.*?)】/)[1]
+                    if (uname === name) div.className = "right"
+                    else div.className = "left"
+                    document.querySelector('#showmsg').appendChild(div)
+                })
+                client.on('users', msg => {
+                    let ul = document.querySelector('.users ul')
+                    ul.innerHTML = msg
+                })
+            }
+        }
+
+        document.querySelector('#btn').addEventListener('click', clickHandler)
+
+        function clickHandler() {
+            if (cnt.value.trim() === "") {
+                alert("不能发送空")
+                return
+            }
+            client.emit('msg', cnt.value.trim())
+            let arr = cnt.value.trim().match(/^(@.+)\s+/)
+            if (!arr) {
+                cnt.value = ''
+            } else {
+                cnt.value = arr[1] + ' ';
+                cnt.focus();
+            }
+        }
+
+        function clickme(name) {
+            cnt.value = `@${name} `
+            cnt.focus();
+        }
+
+        document.querySelector("#pic").addEventListener("change", addFileHandler)
+
+        function addFileHandler(e) {
+            let file = e.target.files[0]
+            let formData = new FormData()
+            formData.append('file', file);
+            let xhr = new XMLHttpRequest()
+            xhr.open("POST", "http://localhost:3000/upfile")
+            xhr.send(formData)
+            xhr.onload = function() {
+                if (xhr.status === 200 && xhr.readyState === 4) {
+                    let json = JSON.parse(xhr.response)
+                    client.emit('msg', json)
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
